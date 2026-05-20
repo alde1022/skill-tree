@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import "tailwindcss";
+:root { --background: #08060a; --foreground: #f5efe4; }
+@theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --font-sans: "EB Garamond", serif; --font-mono: "JetBrains Mono", monospace; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: "EB Garamond", serif; }
+::selection { background: rgba(180,83,9,.45); }

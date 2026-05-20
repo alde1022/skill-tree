@@ -1,0 +1,4 @@
+import { EDGES } from './tree-data';
+export function neighbors(id: string) { return EDGES.filter((e) => e.from === id || e.to === id).map((e) => (e.from === id ? e.to : e.from)); }
+export function canAllocate(id: string, allocated: Set<string>) { if (id === 'birth' || allocated.has(id)) return false; return neighbors(id).some((n) => allocated.has(n)); }
+export function wouldOrphan(id: string, allocated: Set<string>) { if (id === 'birth' || !allocated.has(id)) return true; const remaining = new Set(allocated); remaining.delete(id); const seen = new Set<string>(); const stack = ['birth']; while (stack.length) { const cur = stack.pop()!; if (seen.has(cur) || !remaining.has(cur)) continue; seen.add(cur); for (const n of neighbors(cur)) if (remaining.has(n)) stack.push(n); } return [...remaining].some((node) => !seen.has(node)); }
