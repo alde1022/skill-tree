@@ -9,7 +9,7 @@ const axes: Record<Axis, number> = { perception: -90, reasoning: -18, action: 54
 const polar = (axis: Axis, r: number) => { const a = (axes[axis] * Math.PI) / 180; return { x: Math.round(C.x + Math.cos(a) * r), y: Math.round(C.y + Math.sin(a) * r) }; };
 const n = (id: string, axis: Axis, r: number, type: NodeType, label: string, desc: string, practice: string, config?: AgentConfigContribution): TreeNode => ({ id, axis, type, label, desc, practice, config, ...polar(axis, r) });
 export const NODES: Record<string, TreeNode> = {
-  birth: { id: 'birth', x: 500, y: 450, type: 'start', label: 'Base Agent', desc: 'The spawn point: a frontier model, a task, and enough context to begin.', practice: 'Pick a frontier model: claude-sonnet-4, gpt-4o-mini, or gemini-2.5-flash. The cheapest capable model is your spawn.', config: { model: 'claude-sonnet-4', systemPromptAdditions: ['You are a helpful agent. Act carefully, use tools when needed, and keep the user informed.'] } },
+  birth: { id: 'birth', x: 500, y: 450, type: 'start', label: 'Base Agent', desc: 'The spawn point: a frontier model plus a focused outcome. Great agents are not giant bags of tools.', practice: 'Start with a life outcome: make money, learn faster, stay healthy, protect yourself, build products, or run operations. Add 5-12 active skills first; go broader only when routing is clear.', config: { model: 'claude-sonnet-4', systemPromptAdditions: ['You are a helpful agent. Act carefully, use tools when needed, and keep the user informed.'] } },
 
   p1: { id:'p1', x:500, y:380, type:'minor', axis:'perception', label:'Streaming responses', desc:'Renders tokens as they arrive for conversational UX.', practice:'Enable stream: true on your API calls. Renders tokens as they arrive. Required for any conversational UX.', config:{capabilities:['streaming_responses']} },
   p2: { id:'p2', x:500, y:320, type:'minor', axis:'perception', label:'Structured input', desc:'Validated schemas for safer, more reliable model inputs.', practice:'Define input schemas with JSON Schema or Zod. Validate before passing to the model. Prevents prompt injection from malformed payloads.', config:{capabilities:['structured_input'], notes:['Use JSON Schema or Zod for tool/input validation.']} },
@@ -79,15 +79,15 @@ export const EDGES: TreeEdge[] = [
   {from:'i2',to:'ipA'},{from:'ipA',to:'ipN'},{from:'ipN',to:'ipC'},{from:'ipC',to:'p2'},
 ];
 export const SYNERGIES: Synergy[] = [
-  { id: 'researcher', name: 'Research Analyst', requires: ['pK','rK'], desc: 'Reads any document, thinks deeply about it. Slow, expensive, definitive.' },
-  { id: 'strategist', name: 'Strategist', requires: ['rK','mK'], desc: 'Reasons across long timelines and remembers what it concluded.' },
-  { id: 'operations', name: 'Operations Agent', requires: ['mK','aK'], desc: 'Runs ongoing workflows without supervision. Improves over time.' },
-  { id: 'employee', name: 'Defined Agent', requires: ['aK','iK'], desc: 'Acts in the world with consistent values. The employee archetype.' },
-  { id: 'customer', name: 'Brand Voice', requires: ['iK','pK'], desc: 'Has a voice, can see and hear customers, present in any channel.' },
-  { id: 'ambient', name: 'Ambient Assistant', requires: ['pK','mK'], desc: 'Watches, listens, remembers. Like a household AI.' },
-  { id: 'companion', name: 'Companion', requires: ['mK','iK'], desc: 'Same agent over years. Grows with you.' },
-  { id: 'researcher2', name: 'Investigator', requires: ['rK','aK'], desc: 'Plans long investigations, executes them with tools.' },
-  { id: 'embodied', name: 'Embodied Agent', requires: ['pK','aK'], desc: 'Robot, AR glasses, screen recorder. Acts on what it perceives.' },
-  { id: 'advisor', name: 'Advisor', requires: ['rK','iK'], desc: 'Thinks hard, has clear opinions, stays in character.' },
-  { id: 'agi', name: 'General Agent', requires: ['pK','rK','mK','aK','iK'], desc: 'All five keystones. Statistically improbable. The AGI build.' },
+  { id: 'researcher', name: 'Research Analyst', requires: ['pK','rK'], desc: 'Answers hard questions from messy sources: docs, media, web evidence, long reports.' },
+  { id: 'strategist', name: 'Strategist', requires: ['rK','mK'], desc: 'Helps with career, investing, business, and life plans across long timelines.' },
+  { id: 'operations', name: 'Operator', requires: ['mK','aK'], desc: 'Handles recurring work: inbox, calendar, workflows, monitoring, follow-ups.' },
+  { id: 'employee', name: 'Professional', requires: ['aK','iK'], desc: 'A reliable delegated worker with boundaries, approval gates, and a stable role.' },
+  { id: 'customer', name: 'Creative / Marketer', requires: ['iK','pK'], desc: 'Creates, edits, and adapts content across text, image, voice, and video channels.' },
+  { id: 'ambient', name: 'Protector', requires: ['pK','mK'], desc: 'Monitors context over time: scams, risk, privacy, deadlines, and weak signals.' },
+  { id: 'companion', name: 'Coach / Companion', requires: ['mK','iK'], desc: 'Persistent support for reflection, accountability, learning, and behavior change.' },
+  { id: 'researcher2', name: 'Builder / Investigator', requires: ['rK','aK'], desc: 'Plans, tests, debugs, researches, and executes complex projects with tools.' },
+  { id: 'embodied', name: 'Field Agent', requires: ['pK','aK'], desc: 'Acts on what it sees: browser, screen, documents, websites, dashboards, forms.' },
+  { id: 'advisor', name: 'Advisor / Lawyer-like', requires: ['rK','iK'], desc: 'Structured judgment for contracts, disputes, negotiation, policy, and decisions. Not a licensed professional.' },
+  { id: 'agi', name: 'Generalist', requires: ['pK','rK','mK','aK','iK'], desc: 'All five keystones. Powerful but risky: broad agents need routing or they become noisy.' },
 ];
